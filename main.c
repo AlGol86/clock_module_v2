@@ -91,11 +91,12 @@ char menu_selector() {
   
 	//save date and time if changed
 	if(presetDate.dayOfMonth != transferBody.dayOfMonth || presetDate.month != transferBody.month || presetDate.year != transferBody.year || presetTime.hr != transferBody.hr || presetTime.min != transferBody.min) {
+		print_save(); 
 		rtc_set_time_date(presetTime, presetDate);
     secondsRtcUtcCache.cacheEneble = 0;
 		timeAlignment.epochSecFirstPoint = receiveEpochSecondsRtcMoscow();
 		saveFirstPointTimeToEeprom();
-		print_save(); 
+		
 	}
 	
 	//set correction
@@ -119,11 +120,11 @@ char menu_selector() {
 	
   //save correction if changed
 	if(presetCorrection.timeCorrSec != timeAlignment.timeCorrSec || presetCorrection.timeCorrDecaMs != timeAlignment.timeCorrDecaMs || presetCorrection.positiveCorr != timeAlignment.positiveCorr) {
+		print_save(); 
 		timeAlignment.timeCorrSec = presetCorrection.timeCorrSec;
 		timeAlignment.timeCorrDecaMs = presetCorrection.timeCorrDecaMs;
 		timeAlignment.positiveCorr = presetCorrection.positiveCorr;
-		saveTimeCorrectionToEeprom();
-		print_save(); 
+		saveTimeCorrectionToEeprom();		
 		alignmentTimeCache.cacheEneble = 0;
 	}
 	

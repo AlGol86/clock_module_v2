@@ -215,11 +215,9 @@ void print_time(void) {
 void print_save(void) { 
   char i;
   oled_Clear_Screen();   
-	for(i=0;i<10;i++){
-	  oled_print_giga_digit(5,0,0);
-    oled_print_giga_char('A',16);
-	  oled_print_giga_char('V',32);
-	  oled_print_giga_char('E',48);	
-  }
-	oled_Clear_Screen();
+  oled_print_giga_digit(5,0,0);
+	oled_print_giga_char('A',16);
+	oled_print_giga_char('V',32);
+	oled_print_giga_char('E',48);	
+  
 }
