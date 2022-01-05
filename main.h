@@ -16,4 +16,4 @@ void saveTimeCorrectionToEeprom(void);
 void saveFirstPointTimeToEeprom(void); 
 char menu_selector(void);
 int scan_value_at_pos(char pos);
- 
+char get_ADC(char ch);

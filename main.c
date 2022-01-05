@@ -21,7 +21,7 @@ eeprom_data_t          eeprom_data @0x4100;         //store setting variables (i
 OledDigitBuffer oledBuffer;
 
 int main() { 
-  char i=5;
+  char i;
   init_iic_emb_tx();
   init_encoder(&encoder);
   init_rtc();
@@ -32,7 +32,11 @@ int main() {
 
   while(1) { 
 	
-	  //TODO brightness
+	  //set brightness
+		if(encoder.transient_counter & 0x1000) {
+			i = get_ADC(5);
+		  set_brightness_ssd1306(i > 50 ? 255 : i*5);
+	  }
 		
 		refreshTimeTransferBody();
 		i2c_wr_reg(RX_ADDR, 0x00, &transferBody.year, TRANSFERED_SIZE);
@@ -194,3 +198,20 @@ void populate_timeAlignment_from_eeprom() {
   timeAlignment.timeCorrDecaMs = eeprom_data.timeCorrDecaMs;
   timeAlignment.positiveCorr = eeprom_data.positiveCorr;
 } 
+
+char get_ADC(char ch)
+{
+char h=0;
+char l=0;
+  ADC1->CSR=ADC1_CSR_CH&ch;
+  ADC1->CR1|=ADC1_CR1_ADON; 
+  ADC1->CR1|=ADC1_CR1_ADON;  //dubble 'ADON" for switch on ADC
+while((ADC1->CSR&ADC1_CSR_EOC)==0)
+  {nop();}
+
+ADC1->CSR&=~ADC1_CSR_EOC;
+h=ADC1->DRH;
+l=ADC1->DRL;
+return h;
+//return ((h<<2)|l); unsigned int
+}
